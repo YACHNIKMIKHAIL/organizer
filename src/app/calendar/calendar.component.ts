@@ -6,7 +6,7 @@ interface Day {
   value: moment.Moment
   active: boolean
   disabled: boolean
-  elected: boolean
+  selected: boolean
 }
 
 interface Week {
@@ -53,7 +53,7 @@ export class CalendarComponent implements OnInit {
             }
           })
       })
-      console.log(calendar)
     }
+    this.calendar = calendar
   }
 }
