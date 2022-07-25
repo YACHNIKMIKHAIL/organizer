@@ -18,8 +18,6 @@ export class DateService {
       date: date.date(),
       month: date.month()
     })
-    console.log('changeDate', value)
-    console.log('date', this.date.value)
     this.date.next(value)
   }
 }
