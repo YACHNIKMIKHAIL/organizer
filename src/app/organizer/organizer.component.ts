@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DateService} from "../shared/date.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ITask, TasksService} from "../shared/tasks.service";
-import {Observable, switchMap} from "rxjs";
+import {switchMap} from "rxjs";
 
 @Component({
   selector: 'app-organizer',
@@ -37,5 +37,9 @@ export class OrganizerComponent implements OnInit {
     this.tasksService.create(newTask).subscribe((task: ITask) => {
       this.form.reset()
     }, err => console.error('err', err))
+  }
+
+  remove(task: ITask) {
+    console.log('remove', task)
   }
 }
