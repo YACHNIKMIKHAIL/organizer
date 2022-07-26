@@ -1,11 +1,15 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 
 export interface ITask {
   id?: string
   title: string
   date?: string
+}
+
+interface ICreateResponse {
+  name: string
 }
 
 @Injectable({providedIn: 'root'})
@@ -15,12 +19,24 @@ export class TasksService {
   constructor(private http: HttpClient) {
   }
 
-  create(task: ITask): Observable<Object> {
+  load(date: moment.Moment): Observable<ITask[]> {
     return this.http
-      .post(`${TasksService.url}/${task.date}.json`, task)
-      .pipe(res => {
-        console.log('create-resp', res)
-        return res
-      })
+      .get<ITask[]>(`${TasksService.url}/${date.format('DD-MM-YYYY')}.json`)
+      .pipe(map(tasks => {
+        if (!tasks) return []
+        return Object.keys(tasks).map((key: any) => {
+          console.log('key', key)
+          return {...tasks[key], id: key}
+        })
+      }))
+  }
+
+  create(task: ITask): Observable<ITask> {
+    return this.http
+      .post<ICreateResponse>(`${TasksService.url}/${task.date}.json`, task)
+      .pipe(map(res => {
+        console.log('create-resp', res.name)
+        return {...task, id: res.name}
+      }))
   }
 }
