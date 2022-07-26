@@ -35,6 +35,7 @@ export class OrganizerComponent implements OnInit {
       date: this.dateService.date.value.format('DD-MM-YYYY')
     }
     this.tasksService.create(newTask).subscribe((task: ITask) => {
+      this.tasks.unshift(task)
       this.form.reset()
     }, err => console.error('err', err))
   }
