@@ -39,4 +39,9 @@ export class TasksService {
         return {...task, id: res.name}
       }))
   }
+
+  remove(task: ITask): Observable<void> {
+    return this.http
+      .delete<void>(`${TasksService.url}/${task.date}/${task.id}.json`)
+  }
 }

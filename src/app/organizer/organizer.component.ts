@@ -41,6 +41,8 @@ export class OrganizerComponent implements OnInit {
   }
 
   remove(task: ITask) {
-    console.log('remove', task)
+    this.tasksService.remove(task).subscribe(() => {
+      this.tasks = this.tasks.filter(t => t.id !== task.id)
+    }, err => console.log('err', err))
   }
 }
