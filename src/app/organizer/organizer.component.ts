@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DateService} from "../shared/date.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ITask, TasksService} from "../shared/tasks.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-organizer',
@@ -10,7 +12,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class OrganizerComponent implements OnInit {
   form: FormGroup<{ title: FormControl<string | null> }>
 
-  constructor(public dateService: DateService) {
+  constructor(public dateService: DateService,
+              private tasksService: TasksService) {
     this.form = {} as any
   }
 
@@ -22,5 +25,12 @@ export class OrganizerComponent implements OnInit {
 
   submit() {
     const {title} = this.form.value
+    const newTask: ITask = {
+      title: title ? title : 'No title',
+      date: this.dateService.date.value.format('DD-MM-YYYY')
+    }
+    this.tasksService.create(newTask).subscribe(() => {
+      this.form.reset()
+    }, err => console.error('err', err))
   }
 }
